@@ -51,6 +51,7 @@ Dibagian Database Identification, isikan Nama Database dan juga SID nya. Ini dig
 ![step 4](/02%20Basic%20Administration/img/step%204.png)
 
 Pada bagian Storage Option, pilih option Use following for the database storage attributes. Jangan lupa untuk centang bagian User Oracle-Managed File (OMF).
+
 ![step 5](/02%20Basic%20Administration/img/step%205.png)
 
 Pada bagian Fast Recovery Option, centang di Specifiy Fast Recovery Area. Untuk bagian Fast Recovery Area size bisa disesuaikan.
