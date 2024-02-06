@@ -173,12 +173,13 @@ Kita cek kembali init paramnya
 
 ### Recreate SPfile from Pfile
 
-
+Recreate SPfile from Pfile
 ```
 $ sqlplus / as sysdba
 > create spfile='/opt/oracle/product/19c/dbhome_1/dbs/spfile(SID).ora' FROM PFILE='/opt/oracle/product/19c/dbhome_1/dbs/init(SID).ora';
 ```
 
+Lihat semua parameter file yang ada
 ```
 $ls $ORACLE_HOME/dbs/*ora
 /opt/oracle/product/19c/dbhome_1/dbs/init(SID).ora            //pfile we create
@@ -187,6 +188,7 @@ $ls $ORACLE_HOME/dbs/*ora
 /opt/oracle/product/19c/dbhome_1/dbs/spfile(SID).ora          //new spfile from pfile
 ```
 
+Selanjutnya kita matikan dan jalankan kembali instancenya
 ```
 > shutdown immediate
 Database closed.
@@ -196,6 +198,7 @@ ORACLE instance shut down.
 ORACLE instance started.
 ```
 
+Sekarang kita cek dengan show parameter
 ```
 > show parameter spfile
 
@@ -204,4 +207,16 @@ NAME                                 TYPE        VALUE
 spfile                               string      /opt/oracle/product/19c/dbhome
                                                        _1/dbs/spfile(SID).ora
 ```
-## Managing Data DIictionary
+## Managing Data Dictionary
+### Dynamic Performance Views
+```
+> SELECT * FROM V$MEMORY_DYNAMIC_COMPONENTS ;
+> SELECT * FROM V$SESSION;
+> SELECT LOG_MODE,OPEN_MODE,DATABASE_ROLE FROM V$DATABASE;
+```
+
+### Data Dictionary Views
+```
+> SELECT USERNAME, ACCOUNT_STATUS FROM DBA_USERS;
+> SELECT TABLE_NAME, TABLESPACE_NAME FROM USER_TABLE;
+```
