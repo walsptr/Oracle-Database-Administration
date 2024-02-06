@@ -67,6 +67,7 @@ Pada bagian Configuration Options, di tab memory pilih yang Use Automatic Shared
 ![step 9](/02%20Basic%20Administration/img/step%209.png)
 
 Pergi ke menut tab Sizing dan ubah processes menjadi 500. Bisa juga disesuaikan sesuai kebutuhan untuk berapa banyak processes yang di inginkan.
+
 ![step 10](/02%20Basic%20Administration/img/step%2010.png)
 
 Pada bagian Management Options, centang pada Configure Enterprise Manager (EM) database express. Biarkan port nya default.
