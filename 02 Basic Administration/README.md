@@ -173,6 +173,7 @@ Kita cek kembali init paramnya
 
 ### Recreate SPfile from Pfile
 
+
 ```
 $ sqlplus / as sysdba
 > create spfile='/opt/oracle/product/19c/dbhome_1/dbs/spfile(SID).ora' FROM PFILE='/opt/oracle/product/19c/dbhome_1/dbs/init(SID).ora';
