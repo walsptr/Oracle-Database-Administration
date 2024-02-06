@@ -34,6 +34,7 @@ Setup Environment variable untuk user oracle
 ```
 vim /home/oracle/.bash_profile
 
+export ORACLE_BASE=/opt/oracle
 export ORACLE_HOME=/opt/oracle/product/19c/dbhome_1
 PATH=/opt/oracle/product/19c/dbhome_1/bin:$PATH
 ```

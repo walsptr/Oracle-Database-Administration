@@ -173,6 +173,34 @@ Kita cek kembali init paramnya
 
 ### Recreate SPfile from Pfile
 
+```
+$ sqlplus / as sysdba
+> create spfile='/opt/oracle/product/19c/dbhome_1/dbs/spfile(SID).ora' FROM PFILE='/opt/oracle/product/19c/dbhome_1/dbs/init(SID).ora';
+```
 
+```
+$ls $ORACLE_HOME/dbs/*ora
+/opt/oracle/product/19c/dbhome_1/dbs/init(SID).ora            //pfile we create
+/opt/oracle/product/19c/dbhome_1/dbs/init.ora                       //example pfile
+/opt/oracle/product/19c/dbhome_1/dbs/ori_spfile(SID).ora //original spfile
+/opt/oracle/product/19c/dbhome_1/dbs/spfile(SID).ora       //new spfile from pfile
+```
 
-### Managing Data DIictionary
+```
+> shutdown immediate
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+> startup
+ORACLE instance started.
+```
+
+```
+> show parameter spfile
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+spfile                               string      /opt/oracle/product/19c/dbhome
+                                                       _1/dbs/spfile(SID).ora
+```
+## Managing Data DIictionary
