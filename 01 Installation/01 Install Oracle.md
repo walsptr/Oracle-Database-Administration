@@ -4,16 +4,13 @@
 Download file rpm oracle database melalui link berikut
 https://www.oracle.com/cis/database/technologies/oracle19c-linux-downloads.html 
 
-### Install oracle database 19c
+### Preinstall oracle database 19c
 
 Pertama kita akan melakukan preinstall untuk oracle databasenya
 ```
 dnf install oracle-database-preinstall-19c -y
 ```
-Setelah itu baru kita install file rpm oracle database
-```
-dnf localinstall oracle-database-ee-19c-1.0-1.x86_64.rpm  -y
-```
+
 
 ### Setup User and Env Oracle
 Ganti password user oracle
@@ -37,4 +34,11 @@ vim /home/oracle/.bash_profile
 
 export ORACLE_HOME=/opt/oracle/product/19c/dbhome_1
 PATH=/opt/oracle/product/19c/dbhome_1/bin:$PATH
+```
+
+### Install oracle database 19c
+Setelah itu baru kita install file rpm oracle database
+```
+export CV_ASSUME_DISTID=OEL7.6
+dnf localinstall oracle-database-ee-19c-1.0-1.x86_64.rpm  -y
 ```
