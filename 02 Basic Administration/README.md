@@ -182,9 +182,9 @@ $ sqlplus / as sysdba
 ```
 $ls $ORACLE_HOME/dbs/*ora
 /opt/oracle/product/19c/dbhome_1/dbs/init(SID).ora            //pfile we create
-/opt/oracle/product/19c/dbhome_1/dbs/init.ora                       //example pfile
-/opt/oracle/product/19c/dbhome_1/dbs/ori_spfile(SID).ora //original spfile
-/opt/oracle/product/19c/dbhome_1/dbs/spfile(SID).ora       //new spfile from pfile
+/opt/oracle/product/19c/dbhome_1/dbs/init.ora                 //example pfile
+/opt/oracle/product/19c/dbhome_1/dbs/ori_spfile(SID).ora      //original spfile
+/opt/oracle/product/19c/dbhome_1/dbs/spfile(SID).ora          //new spfile from pfile
 ```
 
 ```
