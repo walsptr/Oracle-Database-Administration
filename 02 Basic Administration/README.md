@@ -16,21 +16,21 @@ CREATE DATABASE testdb
    CHARACTER SET AL32UTF8
    NATIONAL CHARACTER SET AL16UTF16
    EXTENT MANAGEMENT LOCAL
-   DATAFILE '/u01/app/oracle/oradata/mynewdb/system01.dbf'
+   DATAFILE '/opt/oracle/oradata/mynewdb/system01.dbf'
      SIZE 700M REUSE AUTOEXTEND ON NEXT 10240K MAXSIZE UNLIMITED
-   SYSAUX DATAFILE '/u01/app/oracle/oradata/mynewdb/sysaux01.dbf'
+   SYSAUX DATAFILE '/opt/oracle/oradata/mynewdb/sysaux01.dbf'
      SIZE 550M REUSE AUTOEXTEND ON NEXT 10240K MAXSIZE UNLIMITED
    DEFAULT TABLESPACE users
-      DATAFILE '/u01/app/oracle/oradata/mynewdb/users01.dbf'
+      DATAFILE '/opt/oracle/oradata/mynewdb/users01.dbf'
       SIZE 500M REUSE AUTOEXTEND ON MAXSIZE UNLIMITED
    DEFAULT TEMPORARY TABLESPACE tempts1
-      TEMPFILE '/u01/app/oracle/oradata/mynewdb/temp01.dbf'
+      TEMPFILE '/opt/oracle/oradata/mynewdb/temp01.dbf'
       SIZE 20M REUSE AUTOEXTEND ON NEXT 640K MAXSIZE UNLIMITED
    UNDO TABLESPACE undotbs1
-      DATAFILE '/u01/app/oracle/oradata/mynewdb/undotbs01.dbf'
+      DATAFILE '/opt/oracle/oradata/mynewdb/undotbs01.dbf'
       SIZE 200M REUSE AUTOEXTEND ON NEXT 5120K MAXSIZE UNLIMITED
    USER_DATA TABLESPACE usertbs
-      DATAFILE '/u01/app/oracle/oradata/mynewdb/usertbs01.dbf'
+      DATAFILE '/opt/oracle/oradata/mynewdb/usertbs01.dbf'
       SIZE 200M REUSE AUTOEXTEND ON MAXSIZE UNLIMITED;
 ```
 
@@ -101,3 +101,78 @@ Tunggu proses createnya selesai.
 Jika sudah selesai bisa langsung klik Close
 <br>
 ![step 16](/02%20Basic%20Administration/img/step%2016.png)
+
+## Managing Instance
+Start instance
+```
+> startup
+> startup open
+> startup nomount
+> startup mount
+```
+Stop Instance
+```
+> shutdown normal
+> shutdown transactional
+> shutdown immediate
+> shutdown abort
+```
+
+## Managing Database Initialization Parameters
+### Create pfile from spfile
+lihat parameter spfile
+```
+> show parameter spfile
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+spfile                               string      /opt/oracle/product/19c/dbhome
+                                                 _1/dbs/spfile(SID).ora
+
+```
+Membuat pfile
+```
+> create pfile='/home/oracle/pfile_test.conf' from spfile;
+```
+
+
+Melihat isi pfile
+```
+> less /home/oracle/pfile_test.conf
+```
+
+shutdown instance
+```
+> shutdown immediate
+```
+
+Rename spfile
+```
+$ cd $ORACLE_HOME/dbs
+$ mv spfile(SID).ora ori_spfile(SID).ora
+```
+
+Jika kita start harusnya akan mendapatkan error karena tidak adanya file init param
+```
+> startup
+```
+Pindahkan pfile yang telah dibuat ke directory init parameter
+```
+$ cp /home/oracle/pfile_test.conf $ORACLE_HOME/dbs/init(SID).ora
+```
+
+Jalankan kembali instance
+```
+> startup
+```
+
+Kita cek kembali init paramnya
+```
+> show parameter spfile
+```
+
+### Recreate SPfile from Pfile
+
+
+
+### Managing Data DIictionary

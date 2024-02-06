@@ -1,7 +1,9 @@
 # Installing Oracle Database
 
+
 ### Download RPM file oracle database
-Download file rpm oracle database melalui link berikut
+Pastikan kalian memiliki akun oracle terlebih dahulu.
+Jika sudah, download file rpm oracle database melalui link berikut
 https://www.oracle.com/cis/database/technologies/oracle19c-linux-downloads.html 
 
 ### Preinstall oracle database 19c
