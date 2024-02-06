@@ -83,7 +83,9 @@ Pada bagian Summary kita lihat lagi konfigurasi kita, jika dirasa sudah benar la
 ![step 14](/02%20Basic%20Administration/img/step%2014.png)
 
 Tunggu proses createnya selesai.
+
 ![step 15](/02%20Basic%20Administration/img/step%2015.png)
 
 Jika sudah selesai bisa langsung klik Close
+
 ![step 16](/02%20Basic%20Administration/img/step%2016.png)
