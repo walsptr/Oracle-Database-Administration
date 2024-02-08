@@ -361,6 +361,77 @@ spfile                               string      /opt/oracle/product/19c/dbhome
 
 ## Move and Rename Datafile
 
+
+Terkadang kita perlu memindahkan datafile dari satu disk ke disk yang lainnya. Atau kadang kita perlu merename datafile karena ada kesalahkan ketik atau semacamnya. Baik memindahkan atau merename datafile memiliki cara yang sama dalam mengelolanya.
+
+Dsini saya akan mencoba merename suatu datafile temporary tablespace yang telah kita buat
+
+### Move/rename database dalam mode noarchivelog
+shutdown database
+```
+shutdown immediate
+```
+
+pindahkan atau rename datafile
+```
+# mv /opt/oracle/oradata/<db-name>/ts/temp2.dbf /opt/oracle/oradata/<db-name>/ts/temp3.dbf
+```
+
+start mount database
+```
+startup mount
+```
+
+rename datafile pada level database
+```
+alter database rename file '/opt/oracle/oradata/<db-name>/ts/temp2.dbf' to '/opt/oracle/oradata/<db-name>/ts/temp3.dbf';
+```
+
+open database
+```
+alter database open
+```
+
+### Move/rename database dalam mode archivelog
+
+disini kita tidak perlu shutdown database. cukup offline kan filenya
+```
+alter database datafile '/opt/oracle/oradata/<db-name>/ts/temp2.dbf' offline;
+```
+
+mv/rename datafile
+```
+# mv /opt/oracle/oradata/<db-name>/ts/temp2.dbf /opt/oracle/oradata/<db-name>/ts/temp3.dbf
+```
+
+rename datafile dilevel database
+```
+alter database rename file '/opt/oracle/oradata/<db-name>/ts/temp2.dbf' to '/opt/oracle/oradata/<db-name>/ts/temp3.dbf';
+```
+
+recover datafile
+```
+recover datafile '/opt/oracle/oradata/<db-name>/ts/temp3.dbf';
+```
+
+online kan datafile
+```
+alter database datafile '/opt/oracle/oradata/<db-name>/ts/temp3.dbf';
+```
+
+## Managing Connectivity
+### Create Listener
+
+```
+```
+
+### Connect to database using easy connect
+```
+sqlplus user/pass@ip_or_hostname_db:1521/mydb
+```
+
+### Create Database Link
+
 ```
 ```
 
