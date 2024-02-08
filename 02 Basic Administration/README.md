@@ -439,10 +439,6 @@ sqlplus user/pass@ip_or_hostname_db:1521/mydb
 default trace log directory
 ```
 /opt/oracle/diag/rdbms/<db-name>/<db-name>/trace/
-
-atau 
-
-show parameter user_dumpt_dest
 ```
 
 default alert log dire
