@@ -102,6 +102,143 @@ Jika sudah selesai bisa langsung klik Close
 <br>
 ![step 16](/02%20Basic%20Administration/img/step%2016.png)
 
+### Show database
+```
+//melihat current database
+show con_name;
+
+//
+select name from v$database;
+```
+
+## Managing Tablespace
+### UNDO Tablespace
+create
+```
+//create dir
+mkdir /opt/oracle/oradata/<db-name>/ts
+
+//create undo tablespace
+create undo tablespace undotbs2 datafile '/opt/oracle/oradata/<db-name>/ts/undotbs2.dbf' size 10m;
+```
+
+resize
+```
+alter database datafile '/opt/oracle/oradata/<db-name>/ts/undotbs2.dbf' resize 20m;
+```
+
+add tbs
+```
+alter tablespace undotbs2 add datafile '/opt/oracle/oradata/<db-name>/ts/undotbs3.dbf' size 10m;
+```
+
+melihat datafile dan size tablespace
+```
+select file_name,bytes from dba_data_files;
+```
+
+melihat dir undo tablespace yang aktif
+```
+show parameter undo_tablespace
+```
+
+change default undo tablespace to new undo tablespace
+```
+alter system set undo_tablespace=undotbs2;
+```
+
+melihat freespace pada undo tablespace
+```
+select a.name, sum(b.bytes) from v$datafile a, dba_free_space b 
+where a.file#=b.file_id and b.TABLESPACE_NAME='UNDOTBS2' group by 
+a.name;
+```
+
+drop undo tablespace
+```
+drop tablespace undotbs2;
+```
+
+### Temporary Tablespace
+
+create temp tablespace
+```
+create temporary tablespace temp2 tempfile '/opt/oracle/oradata/<db-name>/ts/temp2.dbf' size 10m;
+```
+
+resize temp tablespace
+```
+alter database tempfile '/opt/oracle/oradata/<db-name>/ts/temp2.dbf' resize 20m;
+```
+
+add temp tablespace
+```
+alter database temp2 add tempfile '/opt/oracle/oradata/<db-name>/ts/temp23.dbf' size 10m;
+```
+
+melihat dir temp tablespace yang ada
+```
+select file_name,bytes from dba_temp_files;
+```
+
+change default temporary tablespace
+```
+
+```
+
+melihat free space temp tablespace
+```
+select a.name, sum(b.BYTES_FREE) from v$tempfile a, 
+V$TEMP_SPACE_HEADER b where a.file#=b.file_id and 
+b.TABLESPACE_NAME='TEMP2' group by a.name;
+```
+
+### Permanent Tablespace
+Create permanent tablespace
+```
+create tablespace pdata datafile '/opt/oracle/oradata/<db-name>/ts/data2.dbf' size 10m;
+```
+
+resize permanent tablespace
+```
+alter database datafile '/opt/oracle/oradata/<db-name>/ts/data2.dbf' resize 20m;
+```
+
+add permanent tablespace
+```
+alter tablespace pdata add datafile '/opt/oracle/oradata/<db-name>/ts/data3.dbf' size 10m;
+```
+
+melihat default permanent tablespace
+```
+select PROPERTY_VALUE from database_properties where 
+PROPERTY_NAME='DEFAULT_PERMANENT_TABLESPACE';
+```
+
+change default permanent tablespace to new tablespace
+```
+alter database default tablespace pdata;
+```
+
+### Managing table
+create table
+
+```
+create table tb_test(id int primary key, name varchar);
+```
+
+insert data to table
+```
+insert into tb_test values(generate_series(1,10),'data'||generate_series(1,10));
+```
+
+show table
+```
+select * from all_tables;
+```
+
+
+
 ## Managing Instance
 Start instance
 ```
@@ -219,4 +356,34 @@ spfile                               string      /opt/oracle/product/19c/dbhome
 ```
 > SELECT USERNAME, ACCOUNT_STATUS FROM DBA_USERS;
 > SELECT TABLE_NAME, TABLESPACE_NAME FROM USER_TABLE;
+```
+
+
+## Move and Rename Datafile
+
+```
+```
+
+## Managing Log and Trace
+default trace log directory
+```
+/opt/oracle/diag/rdbms/<db-name>/<db-name>/trace/
+
+atau 
+
+show parameter user_dumpt_dest
+```
+
+default alert log dire
+```
+/opt/oracle/diag/rdbms/<db-name>/<db-name>/alert/
+
+atau 
+
+show parameter background_dump_dest
+```
+
+network log
+```
+$ORACLE_HOME/network/log
 ```

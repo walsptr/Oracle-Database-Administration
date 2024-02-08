@@ -25,9 +25,11 @@ vim /etc/selinux/config
 
 //edit baris perintah dibawah
 SELINUX = permissive
-
 //save & quit
+
 setenforce Permissive
+systemctl stop firewalld
+systemctl disable firewalld
 ```
 
 Setup Environment variable untuk user oracle
