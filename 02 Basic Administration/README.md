@@ -6,9 +6,7 @@
 CREATE DATABASE testdb
    USER SYS IDENTIFIED BY password
    USER SYSTEM IDENTIFIED BY password
-   LOGFILE GROUP 1 ('/u01/logs/my/redo01a.log','/u02/logs/my/redo01b.log') SIZE 100M,
-           GROUP 2 ('/u01/logs/my/redo02a.log','/u02/logs/my/redo02b.log') SIZE 100M,
-           GROUP 3 ('/u01/logs/my/redo03a.log','/u02/logs/my/redo03b.log') SIZE 100M
+   LOGFILE GROUP 1 ('/opt/oracle/oradata/testdb/redo01b.log') SIZE 10M,
    MAXLOGHISTORY 1
    MAXLOGFILES 16
    MAXLOGMEMBERS 3
@@ -16,22 +14,22 @@ CREATE DATABASE testdb
    CHARACTER SET AL32UTF8
    NATIONAL CHARACTER SET AL16UTF16
    EXTENT MANAGEMENT LOCAL
-   DATAFILE '/opt/oracle/oradata/mynewdb/system01.dbf'
-     SIZE 700M REUSE AUTOEXTEND ON NEXT 10240K MAXSIZE UNLIMITED
-   SYSAUX DATAFILE '/opt/oracle/oradata/mynewdb/sysaux01.dbf'
-     SIZE 550M REUSE AUTOEXTEND ON NEXT 10240K MAXSIZE UNLIMITED
+   DATAFILE '/opt/oracle/oradata/testdb/system01.dbf'
+     SIZE 10M REUSE AUTOEXTEND ON NEXT 10240K MAXSIZE UNLIMITED
+   SYSAUX DATAFILE '/opt/oracle/oradata/testdb/sysaux01.dbf'
+     SIZE 10M REUSE AUTOEXTEND ON NEXT 10240K MAXSIZE UNLIMITED
    DEFAULT TABLESPACE users
-      DATAFILE '/opt/oracle/oradata/mynewdb/users01.dbf'
-      SIZE 500M REUSE AUTOEXTEND ON MAXSIZE UNLIMITED
+      DATAFILE '/opt/oracle/oradata/testdb/users01.dbf'
+      SIZE 10M REUSE AUTOEXTEND ON MAXSIZE UNLIMITED
    DEFAULT TEMPORARY TABLESPACE tempts1
-      TEMPFILE '/opt/oracle/oradata/mynewdb/temp01.dbf'
-      SIZE 20M REUSE AUTOEXTEND ON NEXT 640K MAXSIZE UNLIMITED
+      TEMPFILE '/opt/oracle/oradata/testdb/temp01.dbf'
+      SIZE 10M REUSE AUTOEXTEND ON NEXT 640K MAXSIZE UNLIMITED
    UNDO TABLESPACE undotbs1
-      DATAFILE '/opt/oracle/oradata/mynewdb/undotbs01.dbf'
-      SIZE 200M REUSE AUTOEXTEND ON NEXT 5120K MAXSIZE UNLIMITED
+      DATAFILE '/opt/oracle/oradata/testdb/undotbs01.dbf'
+      SIZE 10M REUSE AUTOEXTEND ON NEXT 5120K MAXSIZE UNLIMITED
    USER_DATA TABLESPACE usertbs
-      DATAFILE '/opt/oracle/oradata/mynewdb/usertbs01.dbf'
-      SIZE 200M REUSE AUTOEXTEND ON MAXSIZE UNLIMITED;
+      DATAFILE '/opt/oracle/oradata/testdb/usertbs01.dbf'
+      SIZE 10M REUSE AUTOEXTEND ON MAXSIZE UNLIMITED;
 ```
 
 ### Using DBCA
@@ -419,21 +417,6 @@ online kan datafile
 alter database datafile '/opt/oracle/oradata/<db-name>/ts/temp3.dbf';
 ```
 
-## Managing Connectivity
-### Create Listener
-
-```
-```
-
-### Connect to database using easy connect
-```
-sqlplus user/pass@ip_or_hostname_db:1521/mydb
-```
-
-### Create Database Link
-
-```
-```
 
 ## Managing Log and Trace
 default trace log directory
