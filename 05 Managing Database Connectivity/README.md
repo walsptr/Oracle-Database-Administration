@@ -37,7 +37,7 @@ Jika sudah complete klik Next dan finish
 
 ### Connect to database using easy connect
 ```
-sqlplus user/pass@ip_or_hostname_db:1521/mydb
+sqlplus sys/password@SID as sysdba
 ```
 
 ### Create Database Link

@@ -19,6 +19,7 @@ Ganti password user oracle
 ```
 passwd oracle
 ```
+
 Edit SELINUX menjadi permissive
 ```
 vim /etc/selinux/config
@@ -45,5 +46,5 @@ PATH=/opt/oracle/product/19c/dbhome_1/bin:$PATH
 Setelah itu baru kita install file rpm oracle database
 ```
 export CV_ASSUME_DISTID=OEL7.6
-dnf localinstall oracle-database-ee-19c-1.0-1.x86_64.rpm  -y
+dnf localinstall oracle-database-*.rpm  -y
 ```
