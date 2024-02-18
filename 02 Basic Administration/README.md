@@ -222,7 +222,7 @@ alter database default tablespace pdata;
 create table
 
 ```
-create table tb_test(id int primary key, name varchar);
+create table tb_test(id int primary key, name varchar (255));
 ```
 
 insert data to table

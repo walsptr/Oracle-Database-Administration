@@ -5,31 +5,31 @@
 ### Enable archive log
 ```
 sqlplus / as sysdba
-select log_mode from v$database ;
-alter system set log_archive_dest_1 = 'LOCATION=USE_DB_RECOVERY_FILE_DEST' scope=both;
+SELECT log_mode from v$database ;
+ALTER SYSTEM SET log_archive_dest_1 = 'LOCATION=USE_DB_RECOVERY_FILE_DEST' scope=both;
 ALTER SYSTEM SET LOG_ARCHIVE_DEST_STATE_2=ENABLE;
 ALTER SYSTEM SET LOG_ARCHIVE_FORMAT='%t_%s_%r.arc' SCOPE=SPFILE;
 ALTER SYSTEM SET REMOTE_LOGIN_PASSWORDFILE=EXCLUSIVE SCOPE=SPFILE;
 shutdown immediate
 startup mount
-alter database archivelog;
-alter database open;
-alter system switch logfile;
-select name from v$archived_log;
-select log_mode from v$database ;
+ALTER DATABASE ARCHIVELOG;
+ALTER DATABASE OPEN;
+ALTER SYSTEM SWITCH logfile;
+SELECT name from v$archived_log;
+SELECT log_mode from v$database ;
 ```
 
 ### Enable force logging
 ```
-select force_logging from v$database;
-alter database force logging;
-select force_logging from v$database;
+SELECT force_logging from v$database;
+ALTER database force logging;
+SELECT force_logging from v$database;
 ```
 
 ### Check redo log size
 ```
-select group#, thread#, bytes/1024/1024 mb from v$log;
-select thread#, instance from v$thread ;
+SELECT group#, thread#, bytes/1024/1024 mb from v$log;
+SELECT thread#, instance from v$thread ;
 ```
 
 ### Create standby redo logs
@@ -37,16 +37,15 @@ select thread#, instance from v$thread ;
 untuk membuat standby redo log, pastikan kamu menggunakan size yang sama pada pengecheckan redo log size
 disini karena saya memiliki 3 redo log dan size 200mb, maka saya buat dengan size dan jumlah segitu
 ```
-alter database add standby logfile thread 1 size 200m;
-alter database add standby logfile thread 1 size 200m;
-alter database add standby logfile thread 1 size 200m;
+ALTER database add standby logfile thread 1 size 200m;
+ALTER database add standby logfile thread 1 size 200m;
+ALTER database add standby logfile thread 1 size 200m;
 ```
 
 ### Check standby redo logs
 ```
-select group#, thread#, sequence#, bytes/1024/1024 mb, archived, status from v$standby_log;
- 
-select member from v$logfile where type = 'STANDBY';
+SELECT group#, thread#, sequence#, bytes/1024/1024 mb, archived, status from v$standby_log;
+SELECT member from v$logfile where type = 'STANDBY';
 ```
 
 ### Check db Unique Name
@@ -57,35 +56,35 @@ show parameter db_unique_name
 ### Set log_archive_config
 pada bagian dg_config sesuaikan dengan unique name untuk primary dan standby server
 ```
-alter system set log_archive_config='DG_CONFIG=(ORCLDB,STBYDB)' scope=both;
+ALTER SYSTEM set log_archive_config='DG_CONFIG=(ORCLDB,STBYDB)' scope=both;
 ```
 
 ### Set log_archive_dest_2
 ```
-alter system set log_archive_dest_2='SERVICE=STBYDB ASYNC VALID_FOR=(ONLINE_LOGFILES,PRIMARY_ROLE) DB_UNIQUE_NAME=STBYDB' scope=both;
+ALTER SYSTEM set log_archive_dest_2='SERVICE=STBYDB ASYNC VALID_FOR=(ONLINE_LOGFILES,PRIMARY_ROLE) DB_UNIQUE_NAME=STBYDB' scope=both;
 ```
 
 ### Set fal server
 ```
 show parameter fal_server ;
-alter system set fal_server ='STBYDB' scope=both;
+ALTER SYSTEM set fal_server ='STBYDB' scope=both;
 ```
 
 ### Set standby_file_management
 ```
 show parameter standby_file_management
-alter system set standby_file_management='AUTO' scope=both;
+ALTER SYSTEM set standby_file_management='AUTO' scope=both;
 ```
 
 ### Get a list of directory-dependent parameters and create the directories needed in the standby server:
 ```
-select name, value from v$parameter where upper(value) like upper('%/orcldb/%');
+SELECT name, value from v$parameter where upper(value) like upper('%/orcldb/%');
 ```
 You will create the adump directory later on.
 
 ### Enable flashback
 ```
-alter database flashback on;
+ALTER database flashback on;
 ```
 
 ### Check the password file
@@ -211,7 +210,7 @@ startup nomount
 exit
 ```
 
-### Du  plicate database
+### Duplicate database
 connect to rman
 
 connect to primary and standby database at the same time
@@ -231,98 +230,114 @@ SET FAL_SERVER 'ORCLDB'
 NOFILENAMECHECK;
 ```
 
-### Verify replication
 on standby server check
 ```
 sqlplus / as sysdba
-select database_role from v$database;
+SELECT database_role from v$database;
 show parameter db_name
 show parameter db_unique_name
 ```
 
 start redo apply process on standby 
 ```
-alter database recover managed standby database
-disconnect from session;
+ALTER database recover managed standby database disconnect from session;
 ```
 
 check standby server is applying archivers
 ```
-select role, thread#, sequence#, action
-from v$dataguard_process;
+SELECT role, thread#, sequence#, action from v$dataguard_process;
 ```
 
 Now go to the primary and check the archivers too and do a switch logfile to generate a new archiver
 ```
-select sequence#, first_time, next_time 
-from v$archived_log
-order by sequence#;
- 
-alter system switch logfile;
+SELECT sequence#, first_time, next_time from v$archived_log order by sequence#;
+ALTER SYSTEM switch logfile;
 ```
 
 Now go to the standby database and check that the new archiver has been applied.
 ```
-select sequence#, first_time, next_time, applied 
-from v$archived_log
-order by sequence#;
+SELECT sequence#, first_time, next_time, applied from v$archived_log order by sequence#;
 ```
 
 Stop the recovery process on the standby
 ```
-alter database recover managed standby database cancel;
+ALTER database recover managed standby database cancel;
 ```
 
 enable flashback on standby
 ```
-alter database flashback on;
+ALTER database flashback on;
 ```
 
 start recovery process on standby
 ```
-alter database recover managed standby database
-disconnect from session;
+ALTER database recover managed standby database disconnect from session;
 ```
 
-### Switchover 
+## Switchover 
 go to primary to verify swithcover
 ```
 sqlplus / as sysdba
-alter database switchover to STBYDB verify;
+ALTER database switchover to STBYDB verify;
 ```
 
 go to primary server
 ```
-select status, gap_status 
+SELECT status, gap_status 
 from v$archive_dest_status 
 where dest_id = 2;
 ```
 
 switchover to standby
 ```	
-alter database switchover to STBYDB;
+ALTER database switchover to STBYDB;
 ```
 
 ### Switchover back
 
 di srv2 yang telah menjadi primary server
 ```
-alter database switchover to ORCLDB verify;
-alter database switchover to ORCLDB;
+ALTER database switchover to ORCLDB verify;
+ALTER database switchover to ORCLDB;
 ```
 
 open srv1
 ```
-alter database open;
+ALTER database open;
 ```
 
 mount on srv2
 ```
 startup mount
-alter database recover managed standby database disconnect;
+ALTER database recover managed standby database disconnect;
 ```
 
 verify on all server
 ```
-select database_role from v$database;
+SELECT database_role from v$database;
+```
+
+### How to see gap
+```
+SELECT primary.thread#,
+       primary.maxsequence primaryseq,
+       standby.maxsequence standbyseq,
+       primary.maxsequence - standby.maxsequence gap
+from ( SELECT thread#, max(sequence#) maxsequence
+       from v$archived_log
+       where archived = 'YES'
+         and resetlogs_change# = ( SELECT d.resetlogs_change# from v$database d )
+       group by thread# order by thread# ) primary,
+     ( SELECT thread#, max(sequence#) maxsequence
+       from v$archived_log
+       where applied = 'YES'
+         and resetlogs_change# = ( SELECT d.resetlogs_change# from v$database d )
+       group by thread# order by thread# ) standby
+where primary.thread# = standby.thread#;
+```
+
+
+check mrp status
+```
+SELECT PROCESS, CLIENT_PROCESS, STATUS, THREAD#, SEQUENCE#, BLOCK#, BLOCKS FROM GV$MANAGED_STANDBY;
 ```
