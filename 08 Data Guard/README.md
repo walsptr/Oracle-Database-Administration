@@ -281,16 +281,33 @@ sqlplus / as sysdba
 ALTER database switchover to STBYDB verify;
 ```
 
-go to primary server
+go to primary server check gap status
 ```
 SELECT status, gap_status 
 from v$archive_dest_status 
 where dest_id = 2;
 ```
 
-switchover to standby
+switchover to standby. jalankan pada primary database
 ```	
 ALTER database switchover to STBYDB;
+```
+
+dont forget to open database in standby (now primary)
+```
+alter database open;
+```
+
+startup mount in srv1 (now is standby server)
+```
+startup mount
+alter database recover managed standby database disconnect;
+```
+
+check status in srv1
+```
+select database_role from v$database;
+select role, thread#, sequence#, action from v$dataguard_process;
 ```
 
 ### Switchover back
