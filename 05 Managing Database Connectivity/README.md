@@ -40,7 +40,7 @@ Jika sudah complete klik Next dan finish
 sqlplus sys/password@SID as sysdba
 ```
 
-### Create Database Link
+## Database Link
 
 ```
 ```
