@@ -2,4 +2,4 @@
 *.xlsx
 *.docs
 *.pdf
-*.docx
+docs/*
